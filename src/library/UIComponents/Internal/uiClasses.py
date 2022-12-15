@@ -54,3 +54,8 @@ class UIElement:
 
     def draw(self, surface):
         self.drawEvent.invoke(self, surface)
+
+    def setAttribute(self, name, value):
+        setattr(self, name, value)
+
+

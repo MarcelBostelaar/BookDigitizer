@@ -1,12 +1,12 @@
 import pygame.draw
 
 from src.library import inputs
-from src.library.UIComponents.childElementsComponent import addChildFunctionality, resizeWithChildren, drawContained, \
+from src.library.UIComponents.Internal.childElementsComponent import addChildFunctionality, resizeWithChildren, drawContained, \
     drawContainedCentered
-from src.library.UIComponents.draggable import setDragState, moveObject
-from src.library.UIComponents.generalUI import createText, drawCentered, BLACK, RED
-from src.library.lineWithParents import calcEndPosition, calcStartPosition
-from src.library.uiClasses import UIElement
+from src.library.UIComponents.Internal.draggable import setDragState, moveObject
+from src.library.UIComponents.Internal.generalUI import createText, drawCentered, BLACK, RED
+from src.library.UIComponents.Internal.lineWithParents import calcEndPosition, calcStartPosition
+from src.library.UIComponents.Internal.uiClasses import UIElement
 
 
 def identity(origin, x):
@@ -84,6 +84,12 @@ class UIComponentFactory:
                                          ))
             calcStartPosition(parentA, UIObject)
             calcEndPosition(parentB, UIObject)
+        return internal
+
+    @addOperation
+    def defaultLineWidth(self, width=10):
+        def internal(UIObject):
+            UIObject.lineWidth = width
         return internal
 
 
@@ -176,4 +182,9 @@ class UIComponentFactory:
             UIObject.objectToDrag = UIObject
         return internal
 
+    @addOperation
+    def addAttribute(self, name, value):
+        def internal(x):
+            setattr(x, name, value)
+        return internal
 

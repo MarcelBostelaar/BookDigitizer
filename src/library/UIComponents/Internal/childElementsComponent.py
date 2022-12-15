@@ -1,18 +1,37 @@
 import pygame
 
-from src.library.UIComponents.generalUI import CLEAR
+from src.library.UIComponents.Internal.generalUI import CLEAR
 
 
 def __recalcSize(self):
+    if len(self.children) == 0:
+        return
+    self.onUIChange.pause()
+    for child in self.children:
+        child.onUIChange.pause()
     newWidth = 0
     newHeight = 0
+    newRelativeX = 2**31
+    newRelativeY = 2**31
     for child in self.children:
+        if child.x < newRelativeX:
+            newRelativeX = child.x
+        if child.y < newRelativeY:
+            newRelativeY = child.y
         if child.width + child.x > newWidth:
             newWidth = child.width + child.x
         if child.height + child.y > newHeight:
             newHeight = child.height + child.y
+    self.x += newRelativeX
+    self.y += newRelativeY
     self.width = newWidth
     self.height = newHeight
+    for child in self.children:
+        child.x -= newRelativeX
+        child.y -= newRelativeY
+    for child in self.children:
+        child.onUIChange.unpause()
+    self.onUIChange.unpause()
 
 
 def __drawChildren(self, surface):

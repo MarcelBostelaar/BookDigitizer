@@ -25,8 +25,3 @@ Button = UIComponentFactory()\
         .build()
         )
     )
-
-UIGroup = UIComponentFactory()\
-    .addChildFunctionality()\
-    .drawInternalRegular()\
-    .resizeWithChildren()
