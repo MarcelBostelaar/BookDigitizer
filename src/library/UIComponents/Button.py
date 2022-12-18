@@ -1,27 +1,31 @@
-from src.library.UIComponents.UIComponentFactory import UIComponentFactory
+from src.library.UIComponents.Internal.UIClass import UIElement
+from src.library.UIComponents.Internal.childElementsComponent import addChildFunctionality, drawContained
+from src.library.UIComponents.Internal.generalUI import RED, drawRectangle, drawText, BLACK
 
-Button = UIComponentFactory()\
-    .addChildFunctionality()\
-    .drawInternalRegular()\
-    .defaultText()\
-    .defaultColor()\
-    .afterBuild(lambda parent: parent.addChild(
-        UIComponentFactory()
-        .drawRectangle()
-        .copyProperty(parent, "color")
-        .copyProperty(parent, "width")
-        .copyProperty(parent, "height")
-        .build()
-        )
-    )\
-    .afterBuild(lambda parent: parent.addChild(
-        UIComponentFactory()
-        .drawText()
-        .defaultTextColor()
-        .defaultFontSize()
-        .copyProperty(parent, "width")
-        .copyProperty(parent, "height")
-        .copyProperty(parent, "text")
-        .build()
-        )
-    )
+
+def newButton():
+    buttonTopLevel = UIElement()
+    addChildFunctionality(buttonTopLevel)
+    buttonTopLevel.onDraw.subscribe(drawContained)
+    buttonTopLevel.text = "your text here"
+    buttonTopLevel.color = RED
+    buttonTopLevel.textColor = BLACK
+    buttonTopLevel.fontSize = 24
+
+    background = UIElement()
+    background.onDraw.subscribe(drawRectangle)
+    background.copyProperty("color", buttonTopLevel)
+    background.copyProperty("width", buttonTopLevel)
+    background.copyProperty("height", buttonTopLevel)
+    buttonTopLevel.addChild(background)
+
+    text = UIElement()
+    text.copyProperty("textColor", buttonTopLevel)
+    text.copyProperty("fontSize", buttonTopLevel)
+    text.copyProperty("width", buttonTopLevel)
+    text.copyProperty("height", buttonTopLevel)
+    text.onDraw.subscribe(drawText)
+    buttonTopLevel.addChild(text)
+
+    return buttonTopLevel
+

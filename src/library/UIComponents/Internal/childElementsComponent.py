@@ -92,9 +92,9 @@ def addChildFunctionality(UIObject):
     """
     UIObject.children = []
     UIObject.addChild = lambda child, self=UIObject: __addChild(self, child)
-    UIObject.drawEvent.subscribe(__drawChildren)
-    UIObject.mouseDownEvent.subscribe(__onMouseDown)
-    UIObject.mouseUpEvent.subscribe(__onMouseUp)
+    UIObject.onDraw.subscribe(__drawChildren)
+    UIObject.onMouseDown.subscribe(__onMouseDown)
+    UIObject.onMouseUp.subscribe(__onMouseUp)
     UIObject.onTick.subscribe(__onTick)
 
     def updateSurfaceSize(self):
