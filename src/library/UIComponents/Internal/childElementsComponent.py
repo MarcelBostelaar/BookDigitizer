@@ -68,7 +68,6 @@ def __addChild(self, child):
 def __addChildResize(self, child):
     self.children.append(child)
     child.onUIChange.subscribe(lambda self=self: __recalcSize(self))
-    __recalcSize(self)
 
 
 # Below are
@@ -111,6 +110,6 @@ def resizeWithChildren(UIObject):
     :return:
     """
     UIObject.addChild = lambda child, self=UIObject: __addChildResize(self, child)
+    UIObject.onDraw.subscribe(lambda *args, self=UIObject: __recalcSize(self))
     for x in UIObject.children:
         x.onUIChange.subscribe(lambda self=UIObject: __recalcSize(self))
-    __recalcSize(UIObject)

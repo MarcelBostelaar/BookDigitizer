@@ -49,6 +49,8 @@ class UIElement:
                 self.onUIChange.invoke()
             if name in self.genericTriggers.keys():
                 self.genericTriggers[name].invoke()
+            if name == "y":
+                i = 10
             self.onAnyChange.invoke()
 
     def __getattr__(self, item):

@@ -1,5 +1,6 @@
 import pygame
 
+from src.debug import debugText, debugText2
 from src.library.UIComponents.DraggableQuadrilateral import draggableQuadrilateral
 from src.library.UIComponents.UIGroup import UIGroup
 
@@ -28,6 +29,9 @@ poly = draggableQuadrilateral()
 poly.x = 40
 poly.y = 50
 topLevelUI.addChild(poly)
+
+topLevelUI.addChild(debugText)
+topLevelUI.addChild(debugText2)
 
 while not done:
     for event in pygame.event.get():

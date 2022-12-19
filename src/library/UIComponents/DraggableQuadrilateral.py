@@ -1,5 +1,8 @@
 from typing import Union
 
+import pygame
+
+from src.debug import debugText, debugText2
 from src.library.UIComponents.Internal.UIClass import UIElement
 from src.library.UIComponents.Internal.childElementsComponent import addChildFunctionality, drawContainedCentered, \
     resizeWithChildren, drawContained
@@ -63,6 +66,31 @@ def __draggableCorner(parent, cornerNumber: Union[str, int]=""):
     return group
 
 
+def Line(whole, start, end):
+    self = UIElement()
+    self.dependentProperty("xStart", whole, lambda i: getattr(i, start)[0])
+    self.dependentProperty("yStart", whole, lambda i: getattr(i, start)[1])
+    self.dependentProperty("xEnd", whole, lambda i: getattr(i, end)[0])
+    self.dependentProperty("yEnd", whole, lambda i: getattr(i, end)[1])
+
+    self.dependentProperty("x", self, lambda i: i.xStart if i.xStart < i.xEnd else i.xEnd)
+    self.dependentProperty("y", self, lambda i: i.yStart if i.yStart < i.yEnd else i.yEnd)
+    self.dependentProperty("width", self, lambda i: abs(i.xStart-i.xEnd))
+    self.dependentProperty("height", self, lambda i: abs(i.yStart-i.yEnd))
+
+    self.UITriggerProperties += ["xStart", "yStart", "xEnd", "yEnd"]
+    self.copyProperty("color", whole, "trueLineColor")
+    self.copyProperty("lineWidth", whole)
+    self.onDraw.subscribe(lambda self, surface:
+                                 pygame.draw.line(
+                                     surface, self.color,
+                                     (self.xStart, self.yStart),
+                                     (self.xEnd, self.yEnd),
+                                     self.lineWidth
+                                 ))
+    return self
+
+
 def __centerGetter(corner):
     return corner.x + corner.center.x, corner.y + corner.center.y
 
@@ -79,7 +107,8 @@ def draggableQuadrilateral():
     whole.copyProperty("cornerWidth", whole, "cornerSize")
     whole.copyProperty("cornerHeight", whole, "cornerSize")
 
-    whole.lineColor = GREEN
+    whole.lineColor = BLUE
+    whole.lineWidth = 5
     whole.cornerColor = (200, 255, 200, 200)
     whole.errorColor = RED
     whole.dependentProperty("trueLineColor", whole, lambda x: whole.lineColor if x.isConvex else x.errorColor)
@@ -102,6 +131,16 @@ def draggableQuadrilateral():
     corner3.x = defaultSize
     corner3.y = defaultSize
     corner4.y = defaultSize
+
+    line1 = Line(whole, "topLeft", "topRight")
+    line2 = Line(whole, "topRight", "bottomRight")
+    line3 = Line(whole, "bottomRight", "bottomLeft")
+    line4 = Line(whole, "bottomLeft", "topLeft")
+
+    whole.addChild(line1)
+    whole.addChild(line2)
+    whole.addChild(line3)
+    whole.addChild(line4)
 
     whole.addChild(corner1)
     whole.addChild(corner2)
