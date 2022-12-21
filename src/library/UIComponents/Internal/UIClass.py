@@ -13,6 +13,10 @@ class callableNone:
     def __bool__(self):
         return False
 
+    # def __getattr__(self, item):
+    #     print(f"Missing value '{item} of {self.propertyName}'")
+    #     return callableNone(f"{item} of {self.propertyName}")
+
 
 class UIElement:
     def __init__(self, x=0, y=0, width=0, height=0):
@@ -115,3 +119,10 @@ class UIElement:
         self.addChild(child)
         setattr(self, name, child)
 
+    def constrain(self, propertyName, func):
+        """
+        Function to run after change, used to constrain property
+        """
+        def internal():
+            setattr(self, propertyName, func(getattr(self, propertyName)))
+        self.subscribeToPropertyTrigger(propertyName, internal)

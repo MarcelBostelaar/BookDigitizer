@@ -4,7 +4,7 @@ import pygame
 
 from src.debug import debugText, debugText2
 from src.library.UIComponents.Internal.UIClass import UIElement
-from src.library.UIComponents.Internal.childElementsComponent import addChildFunctionality, drawContainedCentered, \
+from src.library.UIComponents.Internal.childElementsComponent import addChildFunctionality, \
     resizeWithChildren, drawContained
 from src.library.UIComponents.Internal.draggable import makeDraggable
 from src.library.UIComponents.Internal.generalUI import RED, BLUE, drawRectangle, GREEN, drawText, BLACK, drawTextNew, \

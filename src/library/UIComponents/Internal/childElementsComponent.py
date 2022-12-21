@@ -78,11 +78,6 @@ def drawContained(self, surface):
     surface.blit(self.surface, (self.x, self.y))
 
 
-def drawContainedCentered(self, surface):
-    """Draws internal surface to screen centered around x y"""
-    surface.blit(self.surface, (self.x - self.width/2, self.y - self.height/2))
-
-
 def addChildFunctionality(UIObject):
     """
     Turns object into a child having object. Makes children draw to internal surface. Does not by default draw self.

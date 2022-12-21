@@ -1,10 +1,11 @@
 import pygame
 
-from src.debug import debugText, debugText2
+from src.debug import debugText, debugText2, debug
 from src.library.UIComponents.DraggableQuadrilateral import draggableQuadrilateral
 from src.library.UIComponents.UIGroup import UIGroup
 
 from src.library.UIComponents.Internal.generalUI import WHITE
+from src.library.UIComponents.splitScreen import leftRightSplitScreen
 from src.library.inputs import updateMouse, onMouse1Down, onMouse1Up
 
 maxFramerate = 30
@@ -25,13 +26,17 @@ topLevelUI = UIGroup()
 onMouse1Down.subscribe(lambda x, y, self=topLevelUI: topLevelUI.onMouseDown.invoke(self, x, y))
 onMouse1Up.subscribe(lambda x, y, self=topLevelUI: topLevelUI.onMouseUp.invoke(self, x, y))
 
-poly = draggableQuadrilateral()
-poly.x = 40
-poly.y = 50
-topLevelUI.addChild(poly)
+poly1 = draggableQuadrilateral()
+poly2 = draggableQuadrilateral()
+split = leftRightSplitScreen()
+split.left.addChild(poly1)
+split.right.addChild(poly2)
+split.width = 400
+split.height = 300
+split.centerDivision()
+topLevelUI.addChild(split)
 
-topLevelUI.addChild(debugText)
-topLevelUI.addChild(debugText2)
+topLevelUI.addChild(debug)
 
 while not done:
     for event in pygame.event.get():
